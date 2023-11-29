@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Device ID Form</title>
+</head>
+<body>
+
+    <h1>Device ID Form</h1>
+
+    <form id="deviceForm">
+        <label for="deviceIdOld">Device ID OLD:</label>
+        <input type="text" id="deviceIdOld" name="deviceIdOld" required>
+      <br>
+      
+
+        <label for="deviceIDLatest">Device ID NEW:</label>
+        <input type="text" id="deviceIDLatest" name="deviceIDLatest" required>
+<br>
+        <button type="button" onclick="submitForm()">Submit</button>
+    </form>
+    <p id="message"></p>
+    <script>
+        function submitForm() {
+            var deviceIdOld = document.getElementById("deviceIdOld").value;
+            var deviceIDLatest = document.getElementById("deviceIDLatest").value;
+            const message = document.getElementById('message');
+            // Create a data object to send to the backend
+            var data = {
+                deviceIdOld: deviceIdOld,
+                deviceIDLatest: deviceIDLatest
+            };
+
+            // Send the data to the Node.js backend using fetch
+            fetch('http://localhost:3000', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            })
+            .then(response => {
+                if (response.ok) {
+                    message.textContent = 'Device Id Updated.';
+                } else {
+                    message.textContent = 'Failed.';
+                }
+            })
+            .then(data => {
+                console.log('Success:', data);
+                // Handle success as needed
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+                // Handle errors as needed
+            });
+        }
+    </script>
+
+</body>
+</html>
